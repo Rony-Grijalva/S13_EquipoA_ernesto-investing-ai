@@ -2,7 +2,7 @@
 
 Registro **literal** de los prompts usados para construir el sistema (requisito AIAP de la guía, entregable 5).
 Herramientas: **Claude** (Anthropic; modelo Claude Opus en Claude Code, noviembre de 2026) para las interfaces HTML/JavaScript,
-la integración y la auditoría; **Figma Make** para las pantallas (pendiente, ver P01).
+la integración y la auditoría; **Figma Make** para las pantallas (P01).
 
 ## 0. Instrucción inicial del equipo a Claude (literal)
 
@@ -21,7 +21,7 @@ transcriben abajo (solo se reemplazó lo que estaba entre corchetes).
 
 ## P01 · Figma Make: pantallas de los módulos nuevos
 
-**Estado:** PENDIENTE — se ejecuta en Figma Make con la cuenta del equipo (ver figma-src/LEEME.md).
+**Estado:** USADO en Figma Make (plan gratuito, 19-nov-2026), pegado literal en una sola línea; el código generado está en figma-src/.
 
 ```xml
 <prompt id="P01" nombre="Figma Make: pantallas de los módulos nuevos">
@@ -53,7 +53,7 @@ Cada pantalla en tema claro y una en tema oscuro, y una versión móvil de 390 p
 
 ## P02 · Descargar el src de Figma Make y ordenar el repositorio
 
-**Estado:** Aplicado para ordenar el repositorio (README.md, .gitignore, figma-src/). La descarga del src de Figma queda pendiente.
+**Estado:** Aplicado para ordenar el repositorio (README.md, .gitignore, figma-src/ con el src descargado sin editar).
 
 ```xml
 <prompt id="P02" nombre="Descargar el src de Figma Make y ordenar el repositorio">

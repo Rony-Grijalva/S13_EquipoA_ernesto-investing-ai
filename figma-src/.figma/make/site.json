@@ -1,0 +1,10 @@
+{
+  "description": "Explore simulated investment forecasts, portfolio allocations, risk optimization, and backtests to support educational investing decisions.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

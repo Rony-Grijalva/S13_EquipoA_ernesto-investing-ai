@@ -10,7 +10,7 @@ Sistema bursátil **educativo** que integra en **un solo sitio** los 9 módulos 
 |---|---|
 | Sitio publicado (GitHub Pages) | https://rony-grijalva.github.io/S13_EquipoA_ernesto-investing-ai/ |
 | Repositorio | https://github.com/Rony-Grijalva/S13_EquipoA_ernesto-investing-ai |
-| Archivo de Figma (solo lectura) | `https://www.figma.com/...` ← *reemplazar* |
+| Archivo de Figma Make (solo lectura) | https://www.figma.com/make/NkGIziCFcZKELNtjeFlquk/S13_EquipoA_Figma_Ernesto_Investing_AI |
 
 ## Cómo ejecutarlo
 
