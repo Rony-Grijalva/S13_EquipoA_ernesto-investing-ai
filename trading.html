@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trading simulado · Ernesto Investing AI</title><link rel="stylesheet" href="css/styles.css"></head>
+<body data-page="trading" data-title="tr.title">
+<main>
+  <h1 data-i18n="tr.title">Trading simulado</h1>
+  <p class="lead" data-i18n="tr.lead">Órdenes a mercado al último precio sintético. El efectivo y las posiciones se guardan en este navegador y alimentan el Leaderboard.</p>
+  <div data-sim="base"></div>
+
+  <section id="chosenBox" aria-labelledby="h-ch" hidden>
+    <div class="banner">
+      <h2 id="h-ch" style="margin-top:0"></h2>
+      <p id="chDesc" class="small"></p>
+      <div class="row">
+        <div><label for="cap" data-i18n="tr.capital">Monto a invertir (US$)</label><input id="cap" type="number" min="1" step="1" aria-describedby="capMsg"></div>
+        <button type="button" id="gen" class="primary" data-i18n="tr.gen">Generar órdenes propuestas</button>
+        <button type="button" id="dismiss" data-i18n="tr.dismiss">Descartar recomendación</button>
+      </div>
+      <p id="capMsg" class="fieldmsg" role="alert"></p>
+      <div id="propBox" hidden>
+        <div class="tw free"><table><caption data-i18n="tr.propCap">Órdenes de compra propuestas (desmarque las que quiera ignorar)</caption>
+          <thead><tr><th scope="col" data-i18n="tr.include">Incluir</th><th scope="col" data-i18n="d.ticker">Ticker</th><th scope="col" data-i18n="m.weight">Peso</th>
+          <th scope="col" data-i18n="tr.price">Precio</th><th scope="col" data-i18n="tr.qty">Cantidad</th><th scope="col" data-i18n="tr.amount">Importe</th></tr></thead>
+          <tbody id="prop"></tbody></table></div>
+        <p><button type="button" id="exec" class="primary" data-i18n="tr.exec">Ejecutar órdenes seleccionadas</button></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section class="card" aria-labelledby="h-ord">
+      <h2 id="h-ord" data-i18n="tr.order">Orden</h2>
+      <form id="f" novalidate>
+        <label for="t" data-i18n="d.asset">Activo</label><select id="t" aria-describedby="tMsg"></select>
+        <p id="tMsg" class="small mut"></p>
+        <fieldset><legend data-i18n="tr.side">Lado</legend>
+          <label class="chk"><input type="radio" name="s" value="C" checked> <span data-i18n="tr.buy">Comprar</span></label>
+          <label class="chk"><input type="radio" name="s" value="V"> <span data-i18n="tr.sell">Vender</span></label></fieldset>
+        <label for="q" data-i18n="tr.qty">Cantidad</label>
+        <input id="q" type="number" min="1" step="1" value="10" inputmode="numeric" aria-describedby="qMsg qHint">
+        <p id="qHint" class="small mut"></p>
+        <p id="qMsg" class="fieldmsg" role="alert"></p>
+        <div class="row"><button class="primary" type="submit" data-i18n="tr.send">Enviar orden</button>
+          <button type="button" id="rs" data-i18n="tr.reset">Reiniciar demo</button></div>
+      </form>
+      <p id="msg" role="status" class="fieldmsg"></p>
+    </section>
+    <section class="card kpi" aria-labelledby="h-val">
+      <h2 id="h-val" data-i18n="tr.values">Valores</h2>
+      <div class="mut" data-i18n="tr.cash">Efectivo</div><div class="v" id="cash"></div>
+      <div class="mut" style="margin-top:.6rem" data-i18n="tr.nav">Valor del portafolio</div><div class="v" id="nav"></div>
+      <div id="ret" style="margin-top:.4rem"></div>
+      <p class="small"><a href="leaderboard.html" data-i18n="tr.toLb">Ver mi posición en el Leaderboard →</a></p>
+    </section>
+  </div>
+
+  <h2 data-i18n="tr.positions">Posiciones</h2>
+  <div class="tw"><table><caption data-i18n="tr.posCap">Posiciones abiertas valorizadas al último precio sintético</caption>
+    <thead><tr><th scope="col" data-i18n="d.ticker">Ticker</th><th scope="col" data-i18n="tr.qty">Cantidad</th><th scope="col" data-i18n="tr.avg">Costo prom.</th>
+    <th scope="col" data-i18n="d.last">Último (US$)</th><th scope="col" data-i18n="tr.value">Valor</th><th scope="col" data-i18n="tr.pl">Ganancia / pérdida</th></tr></thead>
+    <tbody id="tb"></tbody></table></div>
+</main>
+<script src="js/common.js"></script>
+<script src="js/trading.js"></script>
+</body></html>

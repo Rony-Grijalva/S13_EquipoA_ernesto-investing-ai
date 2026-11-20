@@ -1,0 +1,16 @@
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+# Dependencias (solo para tests/verificar_sitio.mjs)
+node_modules/
+package-lock.json
+# Credenciales y secretos: NUNCA se suben
+.env
+.env.*
+*.pem
+*.key
+secrets.*
+credentials*.json

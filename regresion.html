@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Regresión de precios a 30 sesiones · Ernesto Investing AI</title><link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script></head>
+<body data-page="regresion" data-title="r.title">
+<main>
+  <h1 data-i18n="r.title">Regresión de precios a 30 sesiones</h1>
+  <p class="lead" data-i18n="r.lead">18 regresores proyectan 30 cierres diarios futuros. La línea gruesa es la mediana del ensamble; la banda muestra el rango p10–p90 entre modelos y el cono, la incertidumbre propia del mercado.</p>
+  <div data-sim="pred" data-file="06_regresores_precio_30d.json"></div>
+
+  <div class="grid2">
+    <section class="card" aria-labelledby="h-ctl">
+      <h2 id="h-ctl" data-i18n="r.controls">Controles</h2>
+      <div class="row">
+        <div><label for="sel" data-i18n="d.asset">Activo</label><select id="sel"></select></div>
+        <fieldset><legend data-i18n="r.family">Modelos mostrados</legend>
+          <label class="chk"><input type="radio" name="fam" value="" checked> <span data-i18n="all">Todos</span></label>
+          <label class="chk"><input type="radio" name="fam" value="ML"> <span>ML</span></label>
+          <label class="chk"><input type="radio" name="fam" value="DL"> <span>DL</span></label></fieldset>
+      </div>
+      <fieldset style="margin-top:.6rem"><legend data-i18n="r.unc">Incertidumbre</legend>
+        <label class="chk"><input type="checkbox" id="band" checked> <span data-i18n="r.band">Banda p10–p90 entre modelos</span></label>
+        <label class="chk"><input type="checkbox" id="cone" checked> <span data-i18n="r.cone">Cono de volatilidad</span></label></fieldset>
+      <details><summary data-i18n="r.pick">Activar o desactivar modelos individuales</summary><div id="models"></div></details>
+    </section>
+    <section class="card" aria-labelledby="h-sum">
+      <h2 id="h-sum" data-i18n="r.summary">Proyección a 30 sesiones</h2>
+      <div id="sum" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <section aria-labelledby="h-ch">
+    <h2 id="h-ch" data-i18n="r.chartT">Historia (120 sesiones) y pronóstico (30 sesiones)</h2>
+    <div id="chart" class="chart" role="img" style="height:28rem"></div>
+    <p id="uncNote" class="aviso small" role="note" hidden></p>
+    <details><summary data-i18n="r.alt">Ver los 30 precios de la mediana y su banda en una tabla</summary>
+      <div class="tw"><table id="alt"><caption id="altCap"></caption><thead><tr><th scope="col">#</th><th scope="col" data-i18n="d.date">Fecha</th>
+      <th scope="col" data-i18n="r.p10">p10</th><th scope="col" data-i18n="r.med">Mediana</th><th scope="col" data-i18n="r.p90">p90</th>
+      <th scope="col" data-i18n="r.coneL">Cono inf.</th><th scope="col" data-i18n="r.coneH">Cono sup.</th></tr></thead><tbody></tbody></table></div></details>
+  </section>
+
+  <section aria-labelledby="h-met">
+    <h2 id="h-met" data-i18n="r.metrics">Métricas por modelo (error histórico a 30 sesiones)</h2>
+    <p class="small mut"><span data-i18n="sorthint">Pulse un encabezado para ordenar.</span> <span data-i18n="r.metHint">MAPE, MAE y RMSE: menor es mejor. «Mejora vs. persistencia» compara con el modelo ingenuo que repite el último precio.</span></p>
+    <div class="tw"><table id="met"><caption data-i18n="r.metCap">Error de los 18 regresores frente al modelo ingenuo</caption>
+      <thead><tr><th scope="col" class="l" data-k="label" data-dir="asc" data-i18n="c.model">Modelo</th><th scope="col" data-k="familia" data-dir="asc" data-i18n="c.family">Familia</th>
+      <th scope="col" data-k="mape_30d_pct" data-dir="asc">MAPE</th><th scope="col" data-k="mae_relativo_pct" data-dir="asc" data-i18n="r.mae">MAE rel.</th>
+      <th scope="col" data-k="rmse_relativo_pct" data-dir="asc" data-i18n="r.rmse">RMSE rel.</th><th scope="col" data-k="r2_retornos_30d">R² <span data-i18n="r.r2">retornos</span></th>
+      <th scope="col" data-k="mejora_vs_persistencia_pct" data-i18n="r.imp">Mejora vs. persistencia</th><th scope="col" data-k="fin" data-i18n="r.final">Precio a 30 s</th></tr></thead>
+      <tbody id="mtb"></tbody></table></div>
+  </section>
+</main>
+<script src="js/common.js"></script>
+<script src="js/regresion.js"></script>
+</body></html>

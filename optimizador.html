@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Optimizador de portafolios · Ernesto Investing AI</title><link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script></head>
+<body data-page="optimizador" data-title="o.title">
+<main>
+  <h1 data-i18n="o.title">Optimizador: Markowitz, NSGA-II y NSGA-III</h1>
+  <p class="lead" id="lead"></p>
+  <div data-sim="opt" data-file="07_optimizador_markowitz_nsga.json"></div>
+
+  <section class="card" aria-labelledby="h-el">
+    <h2 id="h-el" data-i18n="o.elig">Activos elegibles</h2>
+    <p id="crit" class="small"></p>
+    <div id="eligList" class="crumbs"></div>
+    <p id="fromTk" class="small" aria-live="polite"></p>
+  </section>
+
+  <div class="grid2" style="margin-top:1rem">
+    <section aria-labelledby="h-ch">
+      <h2 id="h-ch" data-i18n="o.chart">Riesgo (X) frente a retorno (Y)</h2>
+      <div class="row">
+        <fieldset><legend data-i18n="o.series">Series</legend>
+          <label class="chk"><input type="checkbox" id="sMk" checked> <span data-i18n="o.mk">Curva de Markowitz</span></label>
+          <label class="chk"><input type="checkbox" id="sN2" checked> <span>NSGA-II</span></label>
+          <label class="chk"><input type="checkbox" id="sN3" checked> <span>NSGA-III</span></label></fieldset>
+        <fieldset><legend data-i18n="o.front">Frontera de Markowitz</legend>
+          <label class="chk"><input type="radio" name="uni" value="markowitz_elegibles" checked> <span data-i18n="o.onlyEl">Solo elegibles</span></label>
+          <label class="chk"><input type="radio" name="uni" value="markowitz_universo_completo"> <span data-i18n="o.full">Universo completo (26)</span></label></fieldset>
+      </div>
+      <div id="chart" class="chart" role="img" style="height:27rem"></div>
+      <p class="small mut" data-i18n="o.clickHint">Haga clic en un punto para ver su composición. Con teclado, use la tabla de puntos de abajo (botón «Ver»).</p>
+    </section>
+    <section class="card" aria-labelledby="h-pt" id="ptBox" tabindex="-1">
+      <h2 id="h-pt" data-i18n="o.point">Portafolio seleccionado</h2>
+      <div id="pt" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <section class="card" aria-labelledby="h-ex" style="margin-top:1rem">
+    <h2 id="h-ex" data-i18n="o.explain">¿Qué optimiza cada método?</h2>
+    <div class="grid3">
+      <div><h3 data-i18n="o.mk">Curva de Markowitz</h3><p class="small" data-i18n="o.exMk">Para cada nivel de riesgo busca la combinación de pesos con el mayor retorno esperado (media–varianza). Es una frontera exacta, calculada con un optimizador matemático.</p></div>
+      <div><h3>NSGA-II</h3><p class="small" data-i18n="o.exN2">Algoritmo genético multiobjetivo con 2 objetivos: maximizar el retorno y minimizar la volatilidad. Entrega un «frente» de soluciones no dominadas.</p></div>
+      <div><h3>NSGA-III</h3><p class="small" data-i18n="o.exN3">Variante para 3 o más objetivos: además del retorno y la volatilidad minimiza el CVaR 95 % (la pérdida media en el 5 % de los peores días). El color de sus puntos indica ese CVaR.</p></div>
+    </div>
+    <p id="why" class="small"></p>
+  </section>
+
+  <section aria-labelledby="h-tab">
+    <h2 id="h-tab" data-i18n="o.table">Tabla de puntos (alternativa accesible al gráfico)</h2>
+    <details><summary id="tabSum"></summary>
+      <p class="small mut" data-i18n="sorthint">Pulse un encabezado para ordenar.</p>
+      <div class="tw"><table id="pts"><caption data-i18n="o.tabCap">Puntos de las fronteras y frentes: retorno, volatilidad, Sharpe y CVaR</caption>
+        <thead><tr><th scope="col" class="l" data-k="id" data-dir="asc">ID</th><th scope="col" class="l" data-k="met" data-dir="asc" data-i18n="o.method">Método</th>
+        <th scope="col" data-k="ret" data-i18n="o.retS">Retorno</th><th scope="col" data-k="vol" data-dir="asc" data-i18n="o.volS">Volatilidad</th>
+        <th scope="col" data-k="sharpe">Sharpe</th><th scope="col" data-k="cvar" data-dir="asc">CVaR 95 %</th><th scope="col" data-i18n="o.view">Composición</th></tr></thead>
+        <tbody></tbody></table></div></details>
+  </section>
+</main>
+<script src="js/common.js"></script>
+<script src="js/optimizador.js"></script>
+</body></html>

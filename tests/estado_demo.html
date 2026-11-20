@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Cargar estado de demostración</title></head>
+<body>
+<p>Carga un estado de demostración en este navegador (watchlist inicial y portafolio <strong>Moderado</strong> elegido, leído de
+<code>data/08_portafolios_3_niveles_riesgo.json</code>) y abre el módulo indicado en <code>?ir=</code>. Sirve para revisar el
+estado compartido Portafolios → Trading → Leaderboard. Para borrarlo use <code>?limpiar=1</code>.</p>
+<script>
+(async () => {
+  const q = new URLSearchParams(location.search);
+  if (q.get("limpiar")) { localStorage.clear(); document.body.insertAdjacentHTML("beforeend", "<p><strong>Estado borrado.</strong></p>"); return; }
+  const pf = await fetch("../data/08_portafolios_3_niveles_riesgo.json").then(r => r.json());
+  const n = pf.niveles.find(x => x.nivel === (q.get("nivel") || "Moderado"));
+  localStorage.setItem("eia_elegido", JSON.stringify({ nivel: n.nivel, pesos: n.pesos, excluidos: [], fecha: pf.fecha }));
+  const ir = (q.get("ir") || "trading").replace(/[^a-z]/g, "");
+  location.replace("../" + ir + ".html" + (q.get("theme") ? "?theme=" + q.get("theme") : ""));
+})();
+</script>
+</body></html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clasificación binaria de tendencia · Ernesto Investing AI</title><link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script></head>
+<body data-page="clasificacion" data-title="c.title">
+<main>
+  <h1 data-i18n="c.title">Clasificación binaria de tendencia</h1>
+  <p class="lead" id="def"></p>
+  <div data-sim="pred" data-file="05_clasificadores_binarios.json"></div>
+
+  <section class="card" aria-labelledby="h-hon">
+    <h2 id="h-hon" data-i18n="c.honest">¿Qué tan bien lo hace? Honestidad del modelo</h2>
+    <div class="grid2">
+      <div id="honest"></div>
+      <div><div id="accChart" class="chart" role="img" style="height:22rem"></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-heat">
+    <h2 id="h-heat" data-i18n="c.heat">Mapa de calor: activo × modelo</h2>
+    <div class="row">
+      <div><label for="grp" data-i18n="d.group">Grupo</label><select id="grp"></select></div>
+      <div><label for="fam" data-i18n="c.family">Familia de modelos</label><select id="fam"></select></div>
+      <label class="chk"><input type="checkbox" id="onlyW"> <span data-i18n="only.watch">Solo mi watchlist</span></label>
+    </div>
+    <div class="legend" id="legend" aria-hidden="true"></div>
+    <p class="small mut" id="heatHint"></p>
+    <div class="tw" style="max-height:36rem"><table class="heat" id="heat"><caption id="heatCap"></caption><thead></thead><tbody></tbody></table></div>
+  </section>
+
+  <div class="grid2" style="margin-top:1rem">
+    <section class="card" aria-labelledby="h-cons" id="consBox" tabindex="-1">
+      <h2 id="h-cons" data-i18n="c.consensus">Consenso del activo</h2>
+      <div id="cons" aria-live="polite"></div>
+    </section>
+    <section class="card" aria-labelledby="h-cm">
+      <h2 id="h-cm" data-i18n="c.cm">Matriz de confusión</h2>
+      <div id="cm" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <section aria-labelledby="h-met">
+    <h2 id="h-met" data-i18n="c.metrics">Métricas por modelo (periodo de prueba)</h2>
+    <p class="small mut"><span data-i18n="sorthint">Pulse un encabezado para ordenar.</span> <span data-i18n="c.hideHint">Desmarque «Mostrar» para ocultar un modelo del mapa de calor (el consenso siempre usa los 18).</span></p>
+    <div class="tw"><table id="met"><caption data-i18n="c.metCap">Exactitud, precisión, recall, F1 y AUC de los 18 clasificadores</caption>
+      <thead><tr><th scope="col" class="l" data-k="label" data-dir="asc" data-i18n="c.model">Modelo</th><th scope="col" data-k="familia" data-dir="asc" data-i18n="c.family">Familia</th>
+      <th scope="col" data-k="exactitud" data-i18n="c.acc">Exactitud</th><th scope="col" data-k="precision" data-i18n="c.prec">Precisión</th>
+      <th scope="col" data-k="recall" data-i18n="c.rec">Recall</th><th scope="col" data-k="f1">F1</th><th scope="col" data-k="auc">AUC</th>
+      <th scope="col" data-k="delta" data-i18n="c.delta">vs. «siempre SUBE»</th><th scope="col" data-i18n="c.show">Mostrar</th><th scope="col" data-i18n="c.cmCol">Matriz</th></tr></thead>
+      <tbody id="mtb"></tbody></table></div>
+  </section>
+</main>
+<script src="js/common.js"></script>
+<script src="js/clasificacion.js"></script>
+</body></html>

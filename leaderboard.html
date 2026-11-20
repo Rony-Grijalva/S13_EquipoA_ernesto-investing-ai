@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leaderboard · Ernesto Investing AI</title><link rel="stylesheet" href="css/styles.css"></head>
+<body data-page="leaderboard" data-title="lb.title">
+<main>
+  <h1 data-i18n="lb.title">Leaderboard de la liga</h1>
+  <p class="lead" data-i18n="lb.lead">Ranking de traders ficticios. Su fila se calcula con el portafolio del módulo Trading (efectivo + posiciones al último precio) frente al valor inicial de la demo.</p>
+  <div data-sim="base"></div>
+  <div class="grid" id="me" aria-live="polite"></div>
+  <h2 data-i18n="lb.rank">Ranking</h2>
+  <div class="tw free"><table><caption data-i18n="lb.cap">Liga de traders ficticios (12_leaderboard_liga.json) y su posición</caption>
+    <thead><tr><th scope="col">#</th><th scope="col" class="l" data-i18n="lb.alias">Alias</th><th scope="col" data-i18n="lb.team">Equipo</th>
+    <th scope="col" data-i18n="lb.ret">Retorno</th><th scope="col" data-i18n="lb.ops">Operaciones</th><th scope="col" data-i18n="lb.sharpe">Sharpe</th></tr></thead>
+    <tbody id="tb"></tbody></table></div>
+</main>
+<script src="js/common.js"></script>
+<script src="js/leaderboard.js"></script>
+</body></html>

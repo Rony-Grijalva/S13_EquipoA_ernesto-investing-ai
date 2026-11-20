@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard · Ernesto Investing AI</title>
+<meta name="description" content="Ernesto Investing AI: sistema web educativo con datos sintéticos (S13, Equipo A).">
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script></head>
+<body data-page="dashboard" data-title="d.title">
+<main>
+  <h1 data-i18n="d.title">Dashboard de mercado</h1>
+  <p class="lead" data-i18n="d.lead">Resumen del universo de 26 activos y velas de las últimas 120 sesiones sintéticas.</p>
+  <div data-sim="base"></div>
+  <section aria-labelledby="h-kpi"><h2 id="h-kpi" class="vh" data-i18n="d.kpis">Referencias de mercado</h2>
+    <div class="grid" id="kpis" aria-live="polite"></div></section>
+
+  <section aria-labelledby="h-velas">
+    <h2 id="h-velas" data-i18n="d.candles">Velas del activo (últimas 120 sesiones)</h2>
+    <div class="row">
+      <div><label for="sel" data-i18n="d.asset">Activo</label><select id="sel"></select></div>
+      <div id="links" class="crumbs"></div>
+    </div>
+    <div id="chart" class="chart" role="img"></div>
+    <details><summary data-i18n="alt.table">Ver los datos del gráfico en una tabla</summary>
+      <div class="tw"><table id="altT"><caption id="altC"></caption><thead><tr>
+        <th scope="col" data-i18n="d.date">Fecha</th><th scope="col" data-i18n="d.open">Apertura</th><th scope="col" data-i18n="d.high">Máximo</th>
+        <th scope="col" data-i18n="d.low">Mínimo</th><th scope="col" data-i18n="d.close">Cierre</th><th scope="col" data-i18n="d.vol">Volumen</th></tr></thead><tbody></tbody></table></div>
+    </details>
+  </section>
+
+  <section aria-labelledby="h-uni">
+    <h2 id="h-uni" data-i18n="d.universe">Universo de 26 activos</h2>
+    <div class="row">
+      <div><label for="grp" data-i18n="d.filter">Filtrar por grupo</label><select id="grp"></select></div>
+      <label class="chk"><input type="checkbox" id="onlyW"> <span data-i18n="only.watch">Solo mi watchlist</span></label>
+    </div>
+    <p class="small mut" data-i18n="sorthint">Pulse un encabezado para ordenar.</p>
+    <div class="tw"><table id="uni"><caption data-i18n="d.cap">Variaciones, riesgo y señales del sistema (datos sintéticos)</caption>
+      <thead><tr>
+        <th scope="col" data-k="ticker" data-dir="asc" data-i18n="d.ticker">Ticker</th>
+        <th scope="col" class="l" data-k="grupo" data-dir="asc" data-i18n="d.group">Grupo</th>
+        <th scope="col" data-k="ultimo" data-i18n="d.last">Último (US$)</th>
+        <th scope="col" data-k="var_1d_pct" data-i18n="d.v1d">1 d</th>
+        <th scope="col" data-k="var_1m_pct" data-i18n="d.v1m">1 m</th>
+        <th scope="col" data-k="var_3m_pct" data-i18n="d.v3m">3 m</th>
+        <th scope="col" data-k="volatilidad_anual_pct" data-i18n="d.volA">Vol. anual</th>
+        <th scope="col" data-k="beta_vs_SPY" data-i18n="d.beta">Beta</th>
+        <th scope="col" data-k="votos" data-i18n="d.sig">Consenso 30 s</th>
+        <th scope="col" data-k="ret30" data-i18n="d.proj">Proyección 30 s</th>
+        <th scope="col" data-i18n="d.watch">Watchlist</th>
+      </tr></thead><tbody id="tb"></tbody></table></div>
+  </section>
+</main>
+<script src="js/common.js"></script>
+<script src="js/dashboard.js"></script>
+</body></html>

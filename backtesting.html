@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Backtesting de portafolios · Ernesto Investing AI</title><link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script></head>
+<body data-page="backtesting" data-title="b.title">
+<main>
+  <h1 data-i18n="b.title">Backtesting de portafolios</h1>
+  <p class="lead" id="lead"></p>
+  <div data-sim="bt" data-file="09_backtesting_portafolios.json"></div>
+
+  <section class="card" aria-labelledby="h-int">
+    <h2 id="h-int" data-i18n="b.interp">Interpretación (generada a partir de las métricas)</h2>
+    <div id="interp"></div>
+  </section>
+
+  <section aria-labelledby="h-eq">
+    <h2 id="h-eq" data-i18n="b.equity">Curvas de capital (base 100)</h2>
+    <fieldset><legend data-i18n="b.showS">Series mostradas</legend><div id="toggles"></div></fieldset>
+    <div id="eq" class="chart" role="img" style="height:26rem"></div>
+    <h2 data-i18n="b.dd">Drawdown (caída desde el máximo previo)</h2>
+    <div id="dd" class="chart sm" role="img"></div>
+    <details><summary data-i18n="b.alt">Ver las curvas en una tabla (cierre de cada mes)</summary>
+      <div class="tw"><table id="altT"><caption data-i18n="b.altCap">Valor de cada curva (base 100) al cierre de cada bloque de 21 sesiones</caption><thead></thead><tbody></tbody></table></div></details>
+  </section>
+
+  <section aria-labelledby="h-met">
+    <h2 id="h-met" data-i18n="b.metrics">Métricas del periodo</h2>
+    <p class="small mut" data-i18n="sorthint">Pulse un encabezado para ordenar.</p>
+    <div class="tw free"><table id="met"><caption data-i18n="b.metCap">Retorno, riesgo y eficiencia de las 3 carteras frente a las 4 referencias</caption>
+      <thead><tr><th scope="col" class="l" data-k="name" data-dir="asc" data-i18n="b.series">Serie</th><th scope="col" class="l" data-k="kind" data-dir="asc" data-i18n="b.kind">Tipo</th>
+      <th scope="col" data-k="retorno_total_pct" data-i18n="b.ret">Retorno total</th><th scope="col" data-k="cagr_pct">CAGR</th>
+      <th scope="col" data-k="volatilidad_anual_pct" data-dir="asc" data-i18n="b.vol">Volatilidad</th><th scope="col" data-k="sharpe">Sharpe</th>
+      <th scope="col" data-k="max_drawdown_pct" data-i18n="b.mdd">Máx. drawdown</th><th scope="col" data-k="calmar">Calmar</th>
+      <th scope="col" data-k="meses_positivos_pct" data-i18n="b.pos">Meses positivos</th><th scope="col" data-k="vsSPY" data-i18n="b.vsSpy">vs. SPY</th></tr></thead>
+      <tbody></tbody></table></div>
+    <p id="verif" class="small mut"></p>
+  </section>
+
+  <section aria-labelledby="h-reb">
+    <h2 id="h-reb" data-i18n="b.reb">Línea de tiempo de rebalanceos</h2>
+    <div class="row"><div><label for="cart" data-i18n="b.cart">Cartera</label><select id="cart"></select></div><p id="turn" class="small"></p></div>
+    <div id="rebChart" class="chart sm" role="img"></div>
+    <ol class="timeline" id="tl"></ol>
+  </section>
+</main>
+<script src="js/common.js"></script>
+<script src="js/backtesting.js"></script>
+</body></html>

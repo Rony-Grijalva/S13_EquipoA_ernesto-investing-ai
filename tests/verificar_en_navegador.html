@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verificación del sitio · Ernesto Investing AI</title>
+<style>
+  body{margin:0;padding:20px;font:14px/1.45 system-ui,Segoe UI,Arial,sans-serif;color:#14202e;background:#f6f8fb}
+  h1{font-size:20px;margin:0 0 6px}h2{font-size:16px;margin:18px 0 6px}
+  table{border-collapse:collapse;width:100%;background:#fff;font-size:13px}
+  th,td{border:1px solid #c9d3de;padding:5px 7px;text-align:center}th{background:#1f3864;color:#fff}
+  td.l{text-align:left}.ok{color:#0a7d3c;font-weight:700}.ko{color:#b3261e;font-weight:700}
+  #box{position:absolute;left:-5000px;top:0}
+  .sum{font-size:16px;font-weight:700;margin:10px 0}
+</style></head>
+<body>
+<h1>Verificación automática del sistema integrado (P07 / P08)</h1>
+<p>Abre las 9 páginas en marcos de <strong>1280 px</strong> y <strong>390 px</strong> y comprueba: errores de JavaScript, desborde horizontal, navegación única (9 enlaces), enlace «Saltar al contenido», aviso de datos sintéticos, foco visible y que la clasificación no muestre una tercera clase. Equivalente sin instalación de <code>tests/verificar_sitio.mjs</code> (Playwright).</p>
+<p id="when"></p>
+<div class="sum" id="sum">Ejecutando…</div>
+<table><thead><tr><th>Página</th><th>Ancho</th><th>Errores JS</th><th>Desborde</th><th>Enlaces nav</th><th>Saltar</th><th>Aviso</th><th>Tercera clase</th><th>Tablas con scope</th><th>Resultado</th></tr></thead><tbody id="tb"></tbody></table>
+<h2>Verificaciones de datos (criterios de la guía)</h2>
+<table><thead><tr><th>Criterio</th><th>Valor medido</th><th>Tolerancia</th><th>Resultado</th></tr></thead><tbody id="db"></tbody></table>
+<div id="box"></div>
+<script>
+const PAGES = ["index","watchlist","trading","leaderboard","clasificacion","regresion","optimizador","portafolios","backtesting"];
+const PRED = new Set(["clasificacion","regresion","optimizador","portafolios","backtesting"]);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const mark = b => b ? '<span class="ok">✔</span>' : '<span class="ko">✘</span>';
+async function check(p, w) {
+  const f = document.createElement("iframe"); f.style.cssText = `width:${w}px;height:900px;border:0`;
+  document.getElementById("box").appendChild(f);
+  await new Promise(r => { f.onload = r; f.src = `../${p}.html?theme=light&lang=es`; });
+  await sleep(2200);
+  const d = f.contentDocument, win = f.contentWindow;
+  const r = {
+    errs: (win.__EIA_ERRORS || []).length + d.querySelectorAll(".err[role=alert]").length,
+    over: d.documentElement.scrollWidth > win.innerWidth,
+    nav: d.querySelectorAll("nav.mods a").length,
+    skip: !!d.querySelector("a.skip[href='#contenido']"),
+    aviso: !!d.querySelector("[data-sim]") && d.querySelector("[data-sim]").textContent.length > 20,
+    tercera: /NEUTRO|MANTENER|HOLD/.test(d.body.innerText),
+    scope: [...d.querySelectorAll("thead th")].every(th => th.getAttribute("scope") === "col")
+  };
+  f.remove();
+  r.ok = !r.errs && !r.over && r.nav === 9 && r.skip && r.aviso && !(PRED.has(p) && r.tercera) && r.scope;
+  return r;
+}
+async function dataChecks() {
+  const L = n => fetch("../data/" + n).then(r => r.json());
+  const [R, O, B, C, D, P] = await Promise.all([L("06_regresores_precio_30d.json"), L("07_optimizador_markowitz_nsga.json"), L("09_backtesting_portafolios.json"),
+    L("05_clasificadores_binarios.json"), L("10_dashboard_mercado.json"), L("02_precios_sinteticos_504d.json")]);
+  const rows = [];
+  // Criterio de la guía (P04): tolerancia de 1 centavo. El retorno del JSON viene redondeado a 2 decimales,
+  // por lo que el error esperable por redondeo es hasta precio × 0,005 %; se reportan ambas lecturas.
+  const diffs = Object.values(R.predicciones).map(p => ({ d: Math.abs(p.ensamble_mediana[29] - p.precio_ultimo * (1 + p.retorno_proyectado_30d_pct / 100)), b: p.precio_ultimo * 0.00005 + 0.005 }));
+  const in1c = diffs.filter(x => x.d <= 0.01 + 1e-9).length, inRound = diffs.every(x => x.d <= x.b), dm = Math.max(...diffs.map(x => x.d));
+  rows.push(["Mediana a 30 s = precio_ultimo × (1 + retorno/100), tolerancia 1 centavo", `${in1c}/26 dentro de 1 ¢ (máx. ${dm.toFixed(3)} US$)`, "≤ 0,01 US$", in1c === 26]);
+  rows.push(["Ídem, considerando que el retorno del JSON está redondeado a 2 decimales", inRound ? "26/26 dentro del error de redondeo" : "fuera del redondeo", "≤ precio × 0,005 % + 0,5 ¢", inRound]);
+  const pts = [...O.markowitz_universo_completo, ...O.markowitz_elegibles, ...O.nsga2_elegibles, ...O.nsga3_elegibles];
+  const ds = Math.max(...pts.map(p => Math.abs(Object.values(p.pesos).reduce((a, b) => a + b, 0) - 1)));
+  const mw = Math.max(...pts.map(p => Math.max(...Object.values(p.pesos))));
+  rows.push([`Suma de pesos = 1 en los ${pts.length} puntos del optimizador`, "desv. máx. " + ds.toFixed(4), "± 0,02", ds <= 0.02]);
+  rows.push(["Ningún peso del optimizador supera el tope", (mw * 100).toFixed(1) + " %", "≤ " + (O.tope_peso_por_activo * 100) + " %", mw <= O.tope_peso_por_activo + 1e-9]);
+  const all = { ...B.carteras, ...B.referencias };
+  const db = Math.max(...Object.values(all).map(s => Math.abs((s.curva[s.curva.length - 1] / 100 - 1) * 100 - s.metricas.retorno_total_pct)));
+  rows.push(["Backtesting: curva final ≈ retorno_total_pct (7 series)", db.toFixed(3) + " pp", "≤ 0,05 pp", db <= 0.05]);
+  const labels = new Set(Object.values(C.predicciones).flatMap(p => p.modelos.map(m => m.senal)));
+  rows.push(["Clasificación con solo dos clases", [...labels].join(", "), "SUBE, BAJA", labels.size === 2 && labels.has("SUBE") && labels.has("BAJA")]);
+  const cells = Object.keys(C.predicciones).length * C.modelos.length;
+  rows.push(["Celdas del mapa de calor (activos × modelos)", cells, "468", cells === 468]);
+  const coh = D.every(d => d.ultimo === R.predicciones[d.ticker].precio_ultimo && d.ultimo === P.cierres[d.ticker][P.cierres[d.ticker].length - 1]);
+  rows.push(["Un solo precio por activo (10 = 06 = 02 último cierre)", coh ? "26/26 coinciden" : "hay diferencias", "26/26", coh]);
+  const el = Object.keys(C.predicciones).filter(t => C.predicciones[t].consenso === "SUBE" && R.predicciones[t].retorno_proyectado_30d_pct > 0);
+  const same = el.length === O.elegibles.length && el.every(t => O.elegibles.includes(t));
+  rows.push(["Elegibles del 07 = consenso SUBE y proyección > 0 (05 + 06)", el.length + " activos", O.elegibles.length + " activos", same]);
+  document.getElementById("db").innerHTML = rows.map(r => `<tr><td class="l">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${mark(r[3])}</td></tr>`).join("");
+  return rows.every(r => r[3]);
+}
+(async () => {
+  document.getElementById("when").textContent = "Fecha de ejecución: " + new Date().toLocaleString("es-PE");
+  let ok = 0, n = 0;
+  for (const w of [1280, 390]) for (const p of PAGES) {
+    const r = await check(p, w); n++; if (r.ok) ok++;
+    document.getElementById("tb").insertAdjacentHTML("beforeend", `<tr><td class="l">${p}.html</td><td>${w}</td><td>${r.errs}</td><td>${r.over ? "sí" : "no"}</td><td>${r.nav}</td><td>${mark(r.skip)}</td><td>${mark(r.aviso)}</td><td>${r.tercera ? "sí" : "no"}</td><td>${mark(r.scope)}</td><td>${mark(r.ok)}</td></tr>`);
+  }
+  const dok = await dataChecks();
+  document.getElementById("sum").innerHTML = `${mark(ok === n)} Páginas: ${ok}/${n} verificaciones superadas · ${mark(dok)} Datos: criterios de la guía ${dok ? "cumplidos" : "con observaciones"}`;
+  document.title = "LISTO · " + document.title;
+})();
+</script>
+</body></html>
